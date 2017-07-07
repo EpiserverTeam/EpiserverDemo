@@ -183,7 +183,7 @@ namespace EpiserverDemo.Business.Initialization
             if (checkPageExisting(nameYearPage, pageIDArticlePage.ToString()))
             {
                 // next step -> check month
-                yearPage = FindPageByNameToPage(new PageReference(182), nameYearPage);
+                yearPage = FindPageByNameToPage(new PageReference(articlePage.ContentLink.ID), nameYearPage);
                 if (checkPageExisting(nameMouthPage, yearPage.ContentLink.ID.ToString()))
                 {
                     monthPage = FindPageByNameToPage(new PageReference(yearPage.ContentLink.ID), nameMouthPage);
