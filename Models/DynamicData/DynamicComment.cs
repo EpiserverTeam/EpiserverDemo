@@ -67,9 +67,7 @@ namespace EpiTest.Models.DynamicData
 
         public DynamicComment(int PageID, String email, String text)
         {
-            
             this.IdComment = DynamicComment.LastId().IdComment + 1;
-
             this.PageID = PageID;
             this.Comment = text;
             this.Email = email;
@@ -121,11 +119,8 @@ namespace EpiTest.Models.DynamicData
 
             var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(DynamicComment));
             var comments = store.Items<DynamicComment>();
-            //if (comments.ToList().Last() == null) return new DynamicComment();            
-            if (comments.ToList().Count() == 0)
-            {
-                return new DynamicComment();
-            }
+            
+            if (comments.ToList().Count() == 0) return new DynamicComment();
             return comments.ToList().Last();
         }
 
