@@ -57,6 +57,7 @@ namespace EpiserverDemo.Business.Initialization
             // 3. Update parent
             // 4. Call IContentRepository.Save with SaveActions equals Publish | Force current version
             // 4b. Move (IContentRepository)
+            
 
             var now = DateTime.Now;
 
