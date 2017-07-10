@@ -67,8 +67,8 @@ namespace EpiTest.Models.DynamicData
 
         public DynamicComment(int PageID, String email, String text)
         {
-            if (DynamicComment.LastId() == null) this.IdComment = 0;
-            else this.IdComment = DynamicComment.LastId().IdComment + 1;
+            
+            this.IdComment = DynamicComment.LastId().IdComment + 1;
 
             this.PageID = PageID;
             this.Comment = text;
@@ -118,10 +118,15 @@ namespace EpiTest.Models.DynamicData
         // get last comment.id in pageID
         public static DynamicComment LastId()
         {
+
             var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(DynamicComment));
             var comments = store.Items<DynamicComment>();
-            if (comments.ToList().Last() == null) return new DynamicComment();
-            else return comments.ToList().Last();
+            //if (comments.ToList().Last() == null) return new DynamicComment();            
+            if (comments.ToList().Count() == 0)
+            {
+                return new DynamicComment();
+            }
+            return comments.ToList().Last();
         }
 
         // get last Comment
@@ -146,10 +151,10 @@ namespace EpiTest.Models.DynamicData
             return comments.ToList();
         }
 
-        public static void Reset(int PageID)
+        public static void Reset()
         {
             var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(DynamicComment));
-            var comments = store.Items<DynamicComment>().Where(x => x.PageID == PageID);
+            //var comments = store.Items<DynamicComment>().Where(x => x.PageID == PageID);
             store.DeleteAll();
         }
 
@@ -160,5 +165,8 @@ namespace EpiTest.Models.DynamicData
             if (ListPage == null) return new List<int>();
             return ListPage.ToList();
         }
+
+        // delete comment 
+       
     }
 }
