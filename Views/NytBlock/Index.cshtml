@@ -1,0 +1,7 @@
+﻿@model EpiTest.Models.Blocks.NytBlock
+
+<img src="@Url.ContentUrl(Model.Link)" width="20%" style="float: @Model.SelectLeftRight"/>
+<p>Vu Ngoc Tan</p>
+@Html.Raw(HttpUtility.HtmlDecode(Model.Text.ToHtmlString()))
+
+@Html.PropertyFor(x => x.Text)

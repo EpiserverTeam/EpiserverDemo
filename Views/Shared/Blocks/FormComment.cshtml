@@ -1,0 +1,114 @@
+﻿@model EpiTest.Models.Blocks.FormComment
+
+<h4>Comment</h4>
+
+@* Kiểm tra đăng nhập *@
+@if (EPiServer.Security.PrincipalInfo.CurrentPrincipal.Identity.IsAuthenticated == true)
+{
+    int ID = EPiServer.ServiceLocation.ServiceLocator.Current.GetInstance<EPiServer.Web.Routing.IPageRouteHelper>().PageLink.ID;
+
+    // Show list comment
+    <ul id="CommentDiv" class="list-group">
+        @foreach (EpiTest.Models.DynamicData.DynamicComment key in Model.ListComment)
+        {
+            <li class="list-group-item" style="display: block">
+
+                @* Form duyệt comment *@
+                <form action="/FormComment/ChangeStatusComment" method="POST" class="form-group">
+                    <input type="hidden" value="@key.IdComment" name="id" id="@key.IdComment" />
+                    <input type="hidden" value="@ID" name="PageID" id="PageID" />
+                    @if (key.Status == "none")
+                    {
+                        <button class="pull-right btn btn-success btn-mini">Allow</button>
+                    }
+                    else
+                    {
+                        <button class="pull-right btn btn-danger btn-small">Unallow</button>
+                    }
+                </form>
+
+                <a href = '#'>@key.Email</a>
+                @key.Comment
+                <br /> @key.IdComment
+                <p style = 'color: grey; font-size: 0.8em'>@key.TimeComment</p>
+            </li>
+            <hr />
+        }
+    </ul>
+
+
+    // Form comment user
+    <div class="form-group">
+
+        <input type="hidden" value="@ID" name="PageID" id="PageID" />
+        <input type="hidden" name="email" id="CommentEmail" placeholder="Email" required class="form-control" value="Admin" />
+        <label for="comment"> @Model.TextInput </label>
+        <textarea name="comment" rows="6" placeholder="Bình luận tại đây ..." id="CommentContent" class="form-control"></textarea>
+        <button class="btn btn-primary" id="CommentButton">Comment</button>
+
+    </div>
+
+}
+else
+{
+    int ID = EPiServer.ServiceLocation.ServiceLocator.Current.GetInstance<EPiServer.Web.Routing.IPageRouteHelper>().PageLink.ID;
+
+    // ID current page
+    <input type="hidden" value="@ID" name="PageID" id="PageID" />
+
+    // Show list comment đã được duyệt
+    <ul id="CommentDiv" class="list-group">
+        @foreach (EpiTest.Models.DynamicData.DynamicComment key in Model.ListComment)
+        {
+            if (key.Status != "none")
+            {
+                <li class="list-group-item" style="display: block">
+                    <a href='#'>@key.Email</a>
+                    @key.Comment
+                    <br />
+                    <p style='color: grey; font-size: 0.8em'>@key.TimeComment</p>
+                </li>
+                <hr />
+            }
+        }
+    </ul>
+
+    // Form comment guest
+    <div class="form-group">
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="CommentEmail" placeholder="Email" required class="form-control" />
+        <label for="comment"> @Model.TextInput </label>
+        <textarea name="comment" rows="6" placeholder="Bình luận tại đây ..." id="CommentContent" class="form-control"></textarea>
+        <button id="CommentButton" class="btn btn-primary">Comment</button>
+
+    </div>
+}
+
+@* Ajax xử lí lưu comment *@
+<script>
+    $('#CommentButton').click(function () {
+
+        if ($('#CommentEmail').val() == "") alert("Error Email");
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/FormComment/SubmitComment",
+                data: {
+                    "input": $('#CommentContent').val(),
+                    "email": $('#CommentEmail').val(),
+                    "id": $('#PageID').val(),
+                },
+
+                success: function (data) {
+                    alert("Success!");
+                    $('#CommentDiv').append("<li class='list-group-item'><a href='#'>" + $('#CommentEmail').val() + "</a>: " + $('#CommentContent').val() + "<br><p style = 'color: grey; font-size: 0.8em'>Vừa xong</p></li>");
+
+                    $('#CommentContent').val("");
+                }
+
+            });
+            return false;
+        }
+    });
+</script>
