@@ -39,7 +39,7 @@ namespace EpiTest.Controllers
         {
             if (input == "reset")
             {
-                DynamicComment.Reset(id);
+                DynamicComment.Reset();
             }
             else
             {
@@ -75,6 +75,12 @@ namespace EpiTest.Controllers
             //Console.WriteLine("Abc");
             //Console.WriteLine(Request.UrlReferrer);
 
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        public ActionResult Reset()
+        {
+            DynamicComment.Reset();
             return Redirect(Request.UrlReferrer.ToString());
         }
     }
