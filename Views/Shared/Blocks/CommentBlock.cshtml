@@ -1,0 +1,81 @@
+﻿@using EPiServer.Core
+@using EPiServer.Web.Mvc.Html
+
+@model CommentBlock
+
+@if (EPiServer.Security.PrincipalInfo.CurrentPrincipal.Identity.IsAuthenticated == true)
+{
+
+    int idPage = EPiServer.ServiceLocation.ServiceLocator.Current.GetInstance<EPiServer.Web.Routing.IPageRouteHelper>().PageLink.ID;
+    @idPage
+    <ul id="CommentDiv" class="list-group">
+        @foreach (EPiServer.Forms.Core.Models.Submission key in Model.AllComment)
+        {
+
+            for (int i = 0; i < key.Data.Values.Count; i++)
+            {
+                
+                //if (key.Data.Values.ToArray()[3].Equals(idPage.ToString()) )
+                if (Model.CompareIDPageWithComment(key.Data.Values.ToArray()[3].ToString(), idPage) ) // question to Mr Ha
+                {
+                    <li>@key.Data.Values.ToArray()[i];</li>
+                }
+
+
+            }
+
+
+            @*<li class="cmt-content" @if (key.Data.Values.ToArray()[1].Equals(true)) { @Html.Raw("hidden")  }>
+
+                <a class="author">@key.Data.Values.ToArray()[0]</a>
+                -
+                <span class="date"> @key.Data.Values.ToArray()[5]</span>
+                <p class="content ">@key.Data.Values.ToArray()[1]</p>
+
+                @*<input class="btn-success pull-right " id="btn_Allow" type="submit" value="Allow">*@
+            @*</li>*@
+
+
+        }
+    </ul>
+}
+else
+{
+    <ul id="CommentDiv" class="list-group">
+        @foreach (EPiServer.Forms.Core.Models.Submission key in Model.AllComment)
+        {
+            int idPage = EPiServer.ServiceLocation.ServiceLocator.Current.GetInstance<EPiServer.Web.Routing.IPageRouteHelper>().PageLink.ID;
+            @idPage
+            {
+                <li class="cmt-content">
+
+                    <a class="author">
+                        @key.Data.Values.ToArray()[1]
+                    </a>
+                    -
+                    <span class="date">
+                        @key.Data.Values.ToArray()[5]
+                    </span>
+                    <p class="content">@key.Data.Values.ToArray()[0]</p>
+
+                </li>
+            }
+
+
+        }
+    </ul>
+}
+<script type="text/javascript">
+
+</script>
+
+<style type="text/css">
+    .list-group {
+        list-style-type: none;
+    }
+
+    .cmt-content {
+        text-decoration: none;
+        margin-top: 15px;
+    }
+</style>
