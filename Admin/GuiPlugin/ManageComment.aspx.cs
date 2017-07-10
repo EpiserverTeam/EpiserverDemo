@@ -7,6 +7,11 @@ using EPiServer.PlugIn;
 using EPiServer.Security;
 using EPiServer.Util.PlugIns;
 using System.Web.UI;
+using System.Web.Mvc;
+using System.Linq;
+using EpiTest.Models.DynamicData;
+using PagedList;
+using System.Web.UI.WebControls;
 
 namespace EpiserverDemo.Admin.GuiPlugin
 {
@@ -15,6 +20,10 @@ namespace EpiserverDemo.Admin.GuiPlugin
     {
 
         // TODO: Add your Plugin Control Code here.
+        public void Index(int? page)
+        {
+            var model = DynamicComment.GetAllComments().OrderByDescending(x => x.PageID).ToPagedList(page ?? 1, 10);
+        } 
 
     }
 }

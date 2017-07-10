@@ -1,9 +1,11 @@
-﻿@inherits System.Web.Mvc.WebViewPage<EpiTest.Models.DynamicData.DynamicComment>
+﻿@inherits System.Web.Mvc.WebViewPage<IPagedList<EpiTest.Models.DynamicData.DynamicComment>>
 @{
     Layout = null;
 }
 
+@using PagedList
 @using PagedList.Mvc
+@using EpiTest.Models.DynamicData
 
 <title>Admin Manage Comments</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -23,7 +25,7 @@
 
 <ul id="CommentDiv" class="list-group">
 
-    @foreach (EpiTest.Models.DynamicData.DynamicComment key in ViewBag.Comments)
+    @foreach (DynamicComment key in ViewBag.Comments)
             {
         <li class="list-group-item" style="display: block">
 
@@ -52,8 +54,10 @@
 </ul>
 
 
-<div>
-    @*@Html.PagedListPager(ViewBag.Comments, page => Url.Action("Index", new { page }))*@
+<div align ="center">
+    @{ var Page = ViewBag.page;
+        }
+    @Html.PagedListPager((IPagedList)ViewBag.Comments, page => Url.Action("Index", new { page }))
 </div>
 
 
