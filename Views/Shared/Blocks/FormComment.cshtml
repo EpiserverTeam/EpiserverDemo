@@ -2,57 +2,9 @@
 
 <h4>Comment</h4>
 <a href="/FormComment/Reset">Reset</a>
-@* Kiểm tra đăng nhập *@
-@if (EPiServer.Security.PrincipalInfo.CurrentPrincipal.Identity.IsAuthenticated == true)
-{
+
+@{
     int ID = EPiServer.ServiceLocation.ServiceLocator.Current.GetInstance<EPiServer.Web.Routing.IPageRouteHelper>().PageLink.ID;
-
-    // Show list comment
-    <ul id="CommentDiv" class="list-group">
-        @foreach (EpiTest.Models.DynamicData.DynamicComment key in Model.ListComment)
-        {
-            <li class="list-group-item" style="display: block">
-
-                @* Form duyệt comment *@
-                <form action="/FormComment/ChangeStatusComment" method="POST" class="form-group">
-                    <input type="hidden" value="@key.IdComment" name="id" id="@key.IdComment" />
-                    <input type="hidden" value="@ID" name="PageID" id="PageID" />
-                    @if (key.Status == "none")
-                    {
-                        <button class="pull-right btn btn-success btn-mini">Allow</button>
-                    }
-                    else
-                    {
-                        <button class="pull-right btn btn-danger btn-small">Unallow</button>
-                    }
-                </form>
-
-                <a href = '#'>@key.Email</a>
-                @key.Comment
-                <br /> @key.IdComment
-                <p style = 'color: grey; font-size: 0.8em'>@key.TimeComment</p>
-            </li>
-            <hr />
-        }
-    </ul>
-
-
-    // Form comment user
-    <div class="form-group">
-
-        <input type="hidden" value="@ID" name="PageID" id="PageID" />
-        <input type="hidden" name="email" id="CommentEmail" placeholder="Email" required class="form-control" value="Admin" />
-        <label for="comment"> @Model.TextInput </label>
-        <textarea name="comment" rows="6" placeholder="Bình luận tại đây ..." id="CommentContent" class="form-control"></textarea>
-        <button class="btn btn-primary" id="CommentButton">Comment</button>
-
-    </div>
-
-}
-else
-{
-    int ID = EPiServer.ServiceLocation.ServiceLocator.Current.GetInstance<EPiServer.Web.Routing.IPageRouteHelper>().PageLink.ID;
-
     // ID current page
     <input type="hidden" value="@ID" name="PageID" id="PageID" />
 
@@ -68,11 +20,32 @@ else
                     <br />
                     <p style='color: grey; font-size: 0.8em'>@key.TimeComment</p>
                 </li>
+
+
                 <hr />
             }
         }
     </ul>
 
+}
+
+@* Kiểm tra đăng nhập *@
+@if (EPiServer.Security.PrincipalInfo.CurrentPrincipal.Identity.IsAuthenticated == true)
+{
+
+    // Form comment user
+    <div class="form-group">
+        
+        <input type="hidden" name="email" id="CommentEmail" placeholder="Email" required class="form-control" value="Admin" />
+        <label for="comment"> @Model.TextInput </label>
+        <textarea name="comment" rows="6" placeholder="Bình luận tại đây ..." id="CommentContent" class="form-control"></textarea>
+        <button class="btn btn-primary" id="CommentButton">Comment</button>
+
+    </div>
+
+}
+else
+{
     // Form comment guest
     <div class="form-group">
 
