@@ -1,5 +1,6 @@
 App_Data
 bin
+modules
 obj
 modulesbin
 EpiserverDemo.csproj
