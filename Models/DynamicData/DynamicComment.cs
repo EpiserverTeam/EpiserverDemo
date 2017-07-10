@@ -119,8 +119,8 @@ namespace EpiTest.Models.DynamicData
 
             var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(DynamicComment));
             var comments = store.Items<DynamicComment>();
+            
             if (comments.ToList().Count() == 0) return new DynamicComment();
-
             return comments.ToList().Last();
         }
 
