@@ -1,0 +1,42 @@
+﻿@using EPiServer.Framework.Web.Resources
+@using EPiServer.Shell.Navigation
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>@ViewBag.Title</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
+    @Html.Raw(ClientResources.RenderResources("ShellCore"))
+    @Html.Raw(ClientResources.RenderResources("ShellWidgets"))
+    @Html.Raw(ClientResources.RenderResources("ShellCoreLightTheme"))
+    @Html.Raw(ClientResources.RenderResources("Navigation"))
+    @Html.Raw(ClientResources.RenderResources("DojoDashboardCompatibility", new[] { ClientResourceType.Style }))
+
+</head>
+
+<body>
+
+    @Html.Raw(Html.ShellInitializationScript())
+    @Html.Raw(Html.GlobalMenu())
+
+    <div>
+
+        @RenderBody()
+
+    </div>
+</body>
+
+<script type="text/javascript">
+    epi.routes.init("");
+    epi.routes.registerRoute("/EPiServer/{moduleArea}/{controller}/{action}/{id}", { "action": "index", "id": "", "moduleArea": "ImageVault.AddOn.EPiCMS7" });
+    epi.routes.registerRoute("/modules/{moduleArea}/{controller}/{action}/{id}", { "action": "index", "id": "", "moduleArea": "App" });
+    epi.routes.registerRoute("/EPiServer/{moduleArea}/{controller}/{action}/{id}", { "controller": "Home", "action": "Index", "id": "", "moduleArea": "CMS" });
+    epi.routes.registerRoute("/EPiServer/AddOns/{controller}/{action}", { "moduleArea": "EPiServer.Packaging.UI", "controller": "AddOns", "action": "Index" });
+    epi.routes.registerRoute("/EPiServer/{moduleArea}/{controller}/{action}/{id}", { "moduleArea": "Shell", "controller": "Dashboard", "action": "Index", "id": "" });
+</script>
+</html>
