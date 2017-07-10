@@ -26,23 +26,33 @@
 <ul id="CommentDiv" class="list-group">
 
     @foreach (DynamicComment key in ViewBag.Comments)
-            {
+    {
         <li class="list-group-item" style="display: block">
 
+            @* Form delete *@
+            <form action="/FormComment/DeleteComment" method="post" onsubmit="return confirmDel()">
+                <input type="hidden" value="@key.IdComment" name="id" id="id-@key.IdComment" />
+                <input type="hidden" value="@ID" name="PageID" id="PageID-@key.IdComment" />
+                <button class="pull-right btn btn-warning">Delete</button>
+            </form>
 
+            @* Form change status *@
             <form class="form-group changeStatus" id="@key.IdComment">
                 <input type="hidden" value="@key.IdComment" name="id" id="id-@key.IdComment" />
                 <input type="hidden" value="@ID" name="PageID" id="PageID-@key.IdComment" />
+
                 @if (key.Status == "none")
                 {
-                    <button class="pull-right btn btn-success btn-mini" id="btn-@key.IdComment">Allow</button>
+                    <button class="pull-right btn btn-success" id="btn-@key.IdComment">Allow</button>
                 }
                 else
                 {
-                    <button class="pull-right btn btn-danger btn-small" id="btn-@key.IdComment">Unallow</button>
+                    <button class="pull-right btn btn-danger" id="btn-@key.IdComment">Unallow</button>
                 }
+
             </form>
 
+            @* Show Comment *@
             <a href='#'>@key.Email</a>:
             @key.Comment
             <p>Page: @key.PageID</p>
@@ -55,41 +65,47 @@
 
 
 <div align ="center">
-    @{ var Page = ViewBag.page;
-        }
     @Html.PagedListPager((IPagedList)ViewBag.Comments, page => Url.Action("Index", new { page }))
 </div>
 
 
 <script>
-        $('.changeStatus').submit(function () {
-            var newVal;
-            var id = $(this).attr('id');
-            if ($('#btn-' + id).text() == "Allow") newVal = "Unallow";
-            if ($('#btn-' + id).text() == "Unallow") newVal = "Allow";
 
-            $.ajax({
-                type: "POST",
-                url: "/FormComment/ChangeStatusComment",
-                data: {
-                    id: id,
-                    PageID: $('#PageID-' + id).val()
-                },
-                success: function (data) {
-                    //alert("Success!");
-                    $('#btn-' + id).html(newVal);
-                    if (newVal == "Unallow") {
-                        $('#btn-' + id).removeClass('btn-success');
-                        $('#btn-' + id).addClass('btn-danger');
-                    }
-                    else {
-                        $('#btn-' + id).removeClass('btn-danger');
-                        $('#btn-' + id).addClass('btn-success');
-                    }
+    function confirmDel() {
+        if (confirm("Are you sure?")) return true;
+        else return false;
+    }
 
+    // Handle change status by ajax
+    $('.changeStatus').submit(function () {
+        var newVal;
+        var id = $(this).attr('id');
+        if ($('#btn-' + id).text() == "Allow") newVal = "Unallow";
+        if ($('#btn-' + id).text() == "Unallow") newVal = "Allow";
+
+        $.ajax({
+            type: "POST",
+            url: "/FormComment/ChangeStatusComment",
+            data: {
+                id: id,
+                PageID: $('#PageID-' + id).val()
+            },
+            success: function (data) {
+                //alert("Success!");
+                $('#btn-' + id).html(newVal);
+                if (newVal == "Unallow") {
+                    $('#btn-' + id).removeClass('btn-success');
+                    $('#btn-' + id).addClass('btn-danger');
                 }
-            });
+                else {
+                    $('#btn-' + id).removeClass('btn-danger');
+                    $('#btn-' + id).addClass('btn-success');
+                }
 
-            return false;
+            }
         });
+
+        return false;
+    });
+
 </script>

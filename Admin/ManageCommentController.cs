@@ -20,16 +20,7 @@ namespace EpiTest.Admin
     {
         public ActionResult Index(int? page)
         {
-            ViewBag.page = page;
             ViewBag.Comments = DynamicComment.GetAllComments().OrderByDescending(x => x.PageID).ToPagedList(page ?? 1, 2);
-
-            var model = DynamicComment.GetAllComments().OrderByDescending(x => x.PageID).ToPagedList(page ?? 1, 2);
-            return View(model);
-        }
-
-        public ActionResult abc()
-        {
-            ViewBag.Test = "abc";
             return View();
         }
     }
