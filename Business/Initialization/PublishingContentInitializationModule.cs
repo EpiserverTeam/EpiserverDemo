@@ -25,13 +25,12 @@ namespace EpiserverDemo.Business.Initialization
             // check year page day existing
             // check or init articlepage
             // if article page existing -> return article page
-            PageData articlePage = CheckOrCreateArticlePage();
 
-            var now = DateTime.Now;
-
-            initPageForDateTime(now, articlePage);
-            var contentEvents = ServiceLocator.Current.GetInstance<IContentEvents>();
-            contentEvents.PublishedContent += ContentEvents_PublishedContent;
+            //PageData articlePage = CheckOrCreateArticlePage();
+            //var now = DateTime.Now;
+            //initPageForDateTime(now, articlePage);
+            //var contentEvents = ServiceLocator.Current.GetInstance<IContentEvents>();
+            //contentEvents.PublishedContent += ContentEvents_PublishedContent;
         }
 
         public PageData CheckOrCreateArticlePage()
@@ -58,17 +57,17 @@ namespace EpiserverDemo.Business.Initialization
             // 4. Call IContentRepository.Save with SaveActions equals Publish | Force current version
             // 4b. Move (IContentRepository)
             
+            // -- test dynamic form
+            //var now = DateTime.Now;
 
-            var now = DateTime.Now;
+            //PageData articlePage = CheckOrCreateArticlePage();
+            //PageData dayPage = FindPageByName(now, articlePage);
 
-            PageData articlePage = CheckOrCreateArticlePage();
-            PageData dayPage = FindPageByName(now, articlePage);
-
-            if (e.Content.ParentLink != dayPage.ContentLink)
-            {
-                IContentRepository contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
-                contentRepository.Move(e.ContentLink, dayPage.ContentLink, AccessLevel.NoAccess, AccessLevel.NoAccess);
-             }
+            //if (e.Content.ParentLink != dayPage.ContentLink)
+            //{
+            //    IContentRepository contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
+            //    contentRepository.Move(e.ContentLink, dayPage.ContentLink, AccessLevel.NoAccess, AccessLevel.NoAccess);
+            // }
 
         }
 

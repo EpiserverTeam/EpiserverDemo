@@ -12,8 +12,8 @@ using EPiServer.Framework.Initialization;
 using EPiServer.Core;
 using EPiServer.Forms.Implementation.Elements;
 using EpiserverDemo.Models.Blocks;
-
 namespace EpiserverDemo.Store
+
 {
 
     public class CommentStore
