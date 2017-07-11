@@ -15,8 +15,8 @@
             for (int i = 0; i < key.Data.Values.Count; i++)
             {
                 
-                //if (key.Data.Values.ToArray()[3].Equals(idPage.ToString()) )
-                if (Model.CompareIDPageWithComment(key.Data.Values.ToArray()[3].ToString(), idPage) ) // question to Mr Ha
+                if (key.Data.Values.ToArray()[3].Equals(idPage.ToString()) )
+                //if (Model.CompareIDPageWithComment(key.Data.Values.ToArray()[3].ToString(), idPage) ) // question to Mr Ha
                 {
                     <li>@key.Data.Values.ToArray()[i];</li>
                 }

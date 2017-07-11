@@ -3,6 +3,10 @@ using EpiserverDemo.Models.Pages;
 using EpiserverDemo.Models.ViewModels;
 using EPiServer.Web;
 using EPiServer.Web.Mvc;
+using EPiServer;
+using EPiServer.Core;
+using EPiServer.ServiceLocation;
+using EPiServer.DataAccess;
 
 namespace EpiserverDemo.Controllers
 {
@@ -24,6 +28,21 @@ namespace EpiserverDemo.Controllers
             }
 
             return View(model);
+        }
+        [HttpPost]
+        public ActionResult SetRootName()
+        {
+            var rootname = Request.Form["rootname"];
+            var startPage = DataFactory.Instance.GetPage(PageReference.StartPage);
+
+            //startPage["RootPageName"] = rootname;
+            var cloneStartPage = startPage.CreateWritableClone();
+            cloneStartPage["RootPageName"] = rootname;
+
+            IContentRepository contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
+
+            contentRepository.Save(cloneStartPage, SaveAction.Publish, EPiServer.Security.AccessLevel.NoAccess);
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
     }

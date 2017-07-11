@@ -50,5 +50,8 @@ namespace EpiserverDemo.Models.Pages
         [Display(GroupName = Global.GroupNames.SiteSettings)]
         public virtual SiteLogotypeBlock SiteLogotype { get; set; }
 
+        // setting root name
+        [Display(GroupName = Global.GroupNames.SiteSettings, Order = 330)]
+        public virtual string RootPageName { get; set; }
     }
 }

@@ -2,3 +2,19 @@
 @model PageViewModel<EpiserverDemo.Models.Pages.StartPage>
 
 @Html.PropertyFor(x => x.CurrentPage.MainContentArea, new { CssClass = "row equal-height", tag = Global.ContentAreaTags.FullWidth })
+
+@if (EPiServer.Security.PrincipalInfo.CurrentPrincipal.Identity.IsAuthenticated == true)
+{
+<form action="/StartPage/SetRootName" method="POST">
+    Choose Root Page Name: 
+    <select name="rootname">
+        <option value="Start">Start Page</option>
+        <option value="Alloy Plan">Alloy Plan</option>
+        <option value="Alloy Track">Alloy Track</option>
+        <option value="Alloy Meet">Alloy Meet</option>
+        <option value="About us">About us</option>
+        <option value="Article Page">Article Page</option>
+    </select> 
+    <button class="btn btn-small">Submit</button>
+</form>
+}
